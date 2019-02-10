@@ -136,6 +136,11 @@ using internal::FunctionMocker;
 #define GMOCK_MOCKER_(arity, constness, Method) \
     GTEST_CONCAT_TOKEN_(gmock##constness##arity##_##Method##_, __LINE__)
 
+// Macro for stringifying other macro's expansion.
+// INTERNAL IMPLEMENTATION - DON'T USE IN USER CODE!!!
+#define GMOCK_STRINGIFY_EXPANSION(content) \
+    GTEST_STRINGIFY_(content)
+
 
 $for i [[
 $range j 1..i
@@ -152,7 +157,7 @@ $var anything_matchers = [[$for j, \
   static_assert($i == ::testing::internal::Function<__VA_ARGS__>::ArgumentCount, "MOCK_METHOD<N> must match argument count.");\
   GMOCK_RESULT_(tn, __VA_ARGS__) ct Method( \
       $arg_as) constness { \
-    GMOCK_MOCKER_($i, constness, Method).SetOwnerAndName(this, #Method); \
+    GMOCK_MOCKER_($i, constness, Method).SetOwnerAndName(this, GMOCK_STRINGIFY_EXPANSION(constness Method<__VA_ARGS__>)); \
     return GMOCK_MOCKER_($i, constness, Method).Invoke($as); \
   } \
   ::testing::MockSpec<__VA_ARGS__> \

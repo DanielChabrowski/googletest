@@ -133,6 +133,11 @@ using internal::FunctionMocker;
 #define GMOCK_MOCKER_(arity, constness, Method) \
     GTEST_CONCAT_TOKEN_(gmock##constness##arity##_##Method##_, __LINE__)
 
+// Macro for stringifying other macro's expansion.
+// INTERNAL IMPLEMENTATION - DON'T USE IN USER CODE!!!
+#define GMOCK_STRINGIFY_EXPANSION(content) \
+    GTEST_STRINGIFY_(content)
+
 // INTERNAL IMPLEMENTATION - DON'T USE IN USER CODE!!!
 #define GMOCK_METHOD0_(tn, constness, ct, Method, ...) \
   static_assert(0 == \
@@ -140,7 +145,8 @@ using internal::FunctionMocker;
       "MOCK_METHOD<N> must match argument count.");\
   GMOCK_RESULT_(tn, __VA_ARGS__) ct Method( \
       ) constness { \
-    GMOCK_MOCKER_(0, constness, Method).SetOwnerAndName(this, #Method); \
+    GMOCK_MOCKER_(0, constness, Method).SetOwnerAndName(this, \
+        GMOCK_STRINGIFY_EXPANSION(constness Method<__VA_ARGS__>)); \
     return GMOCK_MOCKER_(0, constness, Method).Invoke(); \
   } \
   ::testing::MockSpec<__VA_ARGS__> \
@@ -164,7 +170,8 @@ using internal::FunctionMocker;
       "MOCK_METHOD<N> must match argument count.");\
   GMOCK_RESULT_(tn, __VA_ARGS__) ct Method( \
       GMOCK_ARG_(tn, 1, __VA_ARGS__) gmock_a1) constness { \
-    GMOCK_MOCKER_(1, constness, Method).SetOwnerAndName(this, #Method); \
+    GMOCK_MOCKER_(1, constness, Method).SetOwnerAndName(this, \
+        GMOCK_STRINGIFY_EXPANSION(constness Method<__VA_ARGS__>)); \
     return GMOCK_MOCKER_(1, constness, \
         Method).Invoke(::std::forward<GMOCK_ARG_(tn, 1, \
         __VA_ARGS__)>(gmock_a1)); \
@@ -191,7 +198,8 @@ using internal::FunctionMocker;
   GMOCK_RESULT_(tn, __VA_ARGS__) ct Method( \
       GMOCK_ARG_(tn, 1, __VA_ARGS__) gmock_a1, GMOCK_ARG_(tn, 2, \
           __VA_ARGS__) gmock_a2) constness { \
-    GMOCK_MOCKER_(2, constness, Method).SetOwnerAndName(this, #Method); \
+    GMOCK_MOCKER_(2, constness, Method).SetOwnerAndName(this, \
+        GMOCK_STRINGIFY_EXPANSION(constness Method<__VA_ARGS__>)); \
     return GMOCK_MOCKER_(2, constness, \
         Method).Invoke(::std::forward<GMOCK_ARG_(tn, 1, \
         __VA_ARGS__)>(gmock_a1), \
@@ -222,7 +230,8 @@ using internal::FunctionMocker;
       GMOCK_ARG_(tn, 1, __VA_ARGS__) gmock_a1, GMOCK_ARG_(tn, 2, \
           __VA_ARGS__) gmock_a2, GMOCK_ARG_(tn, 3, \
           __VA_ARGS__) gmock_a3) constness { \
-    GMOCK_MOCKER_(3, constness, Method).SetOwnerAndName(this, #Method); \
+    GMOCK_MOCKER_(3, constness, Method).SetOwnerAndName(this, \
+        GMOCK_STRINGIFY_EXPANSION(constness Method<__VA_ARGS__>)); \
     return GMOCK_MOCKER_(3, constness, \
         Method).Invoke(::std::forward<GMOCK_ARG_(tn, 1, \
         __VA_ARGS__)>(gmock_a1), \
@@ -257,7 +266,8 @@ using internal::FunctionMocker;
       GMOCK_ARG_(tn, 1, __VA_ARGS__) gmock_a1, GMOCK_ARG_(tn, 2, \
           __VA_ARGS__) gmock_a2, GMOCK_ARG_(tn, 3, __VA_ARGS__) gmock_a3, \
           GMOCK_ARG_(tn, 4, __VA_ARGS__) gmock_a4) constness { \
-    GMOCK_MOCKER_(4, constness, Method).SetOwnerAndName(this, #Method); \
+    GMOCK_MOCKER_(4, constness, Method).SetOwnerAndName(this, \
+        GMOCK_STRINGIFY_EXPANSION(constness Method<__VA_ARGS__>)); \
     return GMOCK_MOCKER_(4, constness, \
         Method).Invoke(::std::forward<GMOCK_ARG_(tn, 1, \
         __VA_ARGS__)>(gmock_a1), \
@@ -296,7 +306,8 @@ using internal::FunctionMocker;
           __VA_ARGS__) gmock_a2, GMOCK_ARG_(tn, 3, __VA_ARGS__) gmock_a3, \
           GMOCK_ARG_(tn, 4, __VA_ARGS__) gmock_a4, GMOCK_ARG_(tn, 5, \
           __VA_ARGS__) gmock_a5) constness { \
-    GMOCK_MOCKER_(5, constness, Method).SetOwnerAndName(this, #Method); \
+    GMOCK_MOCKER_(5, constness, Method).SetOwnerAndName(this, \
+        GMOCK_STRINGIFY_EXPANSION(constness Method<__VA_ARGS__>)); \
     return GMOCK_MOCKER_(5, constness, \
         Method).Invoke(::std::forward<GMOCK_ARG_(tn, 1, \
         __VA_ARGS__)>(gmock_a1), \
@@ -339,7 +350,8 @@ using internal::FunctionMocker;
           GMOCK_ARG_(tn, 4, __VA_ARGS__) gmock_a4, GMOCK_ARG_(tn, 5, \
           __VA_ARGS__) gmock_a5, GMOCK_ARG_(tn, 6, \
           __VA_ARGS__) gmock_a6) constness { \
-    GMOCK_MOCKER_(6, constness, Method).SetOwnerAndName(this, #Method); \
+    GMOCK_MOCKER_(6, constness, Method).SetOwnerAndName(this, \
+        GMOCK_STRINGIFY_EXPANSION(constness Method<__VA_ARGS__>)); \
     return GMOCK_MOCKER_(6, constness, \
         Method).Invoke(::std::forward<GMOCK_ARG_(tn, 1, \
         __VA_ARGS__)>(gmock_a1), \
@@ -385,7 +397,8 @@ using internal::FunctionMocker;
           GMOCK_ARG_(tn, 4, __VA_ARGS__) gmock_a4, GMOCK_ARG_(tn, 5, \
           __VA_ARGS__) gmock_a5, GMOCK_ARG_(tn, 6, __VA_ARGS__) gmock_a6, \
           GMOCK_ARG_(tn, 7, __VA_ARGS__) gmock_a7) constness { \
-    GMOCK_MOCKER_(7, constness, Method).SetOwnerAndName(this, #Method); \
+    GMOCK_MOCKER_(7, constness, Method).SetOwnerAndName(this, \
+        GMOCK_STRINGIFY_EXPANSION(constness Method<__VA_ARGS__>)); \
     return GMOCK_MOCKER_(7, constness, \
         Method).Invoke(::std::forward<GMOCK_ARG_(tn, 1, \
         __VA_ARGS__)>(gmock_a1), \
@@ -435,7 +448,8 @@ using internal::FunctionMocker;
           __VA_ARGS__) gmock_a5, GMOCK_ARG_(tn, 6, __VA_ARGS__) gmock_a6, \
           GMOCK_ARG_(tn, 7, __VA_ARGS__) gmock_a7, GMOCK_ARG_(tn, 8, \
           __VA_ARGS__) gmock_a8) constness { \
-    GMOCK_MOCKER_(8, constness, Method).SetOwnerAndName(this, #Method); \
+    GMOCK_MOCKER_(8, constness, Method).SetOwnerAndName(this, \
+        GMOCK_STRINGIFY_EXPANSION(constness Method<__VA_ARGS__>)); \
     return GMOCK_MOCKER_(8, constness, \
         Method).Invoke(::std::forward<GMOCK_ARG_(tn, 1, \
         __VA_ARGS__)>(gmock_a1), \
@@ -489,7 +503,8 @@ using internal::FunctionMocker;
           GMOCK_ARG_(tn, 7, __VA_ARGS__) gmock_a7, GMOCK_ARG_(tn, 8, \
           __VA_ARGS__) gmock_a8, GMOCK_ARG_(tn, 9, \
           __VA_ARGS__) gmock_a9) constness { \
-    GMOCK_MOCKER_(9, constness, Method).SetOwnerAndName(this, #Method); \
+    GMOCK_MOCKER_(9, constness, Method).SetOwnerAndName(this, \
+        GMOCK_STRINGIFY_EXPANSION(constness Method<__VA_ARGS__>)); \
     return GMOCK_MOCKER_(9, constness, \
         Method).Invoke(::std::forward<GMOCK_ARG_(tn, 1, \
         __VA_ARGS__)>(gmock_a1), \
@@ -547,7 +562,8 @@ using internal::FunctionMocker;
           GMOCK_ARG_(tn, 7, __VA_ARGS__) gmock_a7, GMOCK_ARG_(tn, 8, \
           __VA_ARGS__) gmock_a8, GMOCK_ARG_(tn, 9, __VA_ARGS__) gmock_a9, \
           GMOCK_ARG_(tn, 10, __VA_ARGS__) gmock_a10) constness { \
-    GMOCK_MOCKER_(10, constness, Method).SetOwnerAndName(this, #Method); \
+    GMOCK_MOCKER_(10, constness, Method).SetOwnerAndName(this, \
+        GMOCK_STRINGIFY_EXPANSION(constness Method<__VA_ARGS__>)); \
     return GMOCK_MOCKER_(10, constness, \
         Method).Invoke(::std::forward<GMOCK_ARG_(tn, 1, \
         __VA_ARGS__)>(gmock_a1), \
